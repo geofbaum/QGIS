@@ -14,9 +14,6 @@ layers = iface.mapCanvas().layers()
 # I chose to use three GCPs since while not necessary for all of the resampling techniques, it is necessary for some types.
 gcp = [gdal.GCP(608219.1, 5.000622.62, 51),gdal.GCP(608731.42, 5.000712.73, 51),gdal.GCP(608420.77, 5.000422.68, 52)] 
 
-# Ignore this next line, it will be removed in a future revision.
-# This is taken from a QGIS output example::::::Each point is listed as follows: Dest. X, Dest. Y, Source X, Source Y
-
 indx = -1
 
 for layer in layers:
