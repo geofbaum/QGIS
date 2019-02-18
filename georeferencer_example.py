@@ -12,7 +12,7 @@ layers = iface.mapCanvas().layers()
 # File that I used for creating this example is in EPSG:32618 (WGS 84/UTM Zone 18N)
 
 # I chose to use three GCPs since while not necessary for all of the resampling techniques, it is necessary for some types.
-gcp = [gdal.GCP(608219.1, 5.000622.62, 51),gdal.GCP(608731.42, 5.000712.73, 51),gdal.GCP(608420.77, 5.000422.68, 52)] 
+gcp = [gdal.GCP(608219.1, 5000622.62, 51),gdal.GCP(608731.42, 5000712.73, 51),gdal.GCP(608420.77, 5000422.68, 52)] 
 
 indx = -1
 
