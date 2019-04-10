@@ -3,42 +3,57 @@ from PyQt5.QtGui import *
 
 qid = QInputDialog()
 
-layers = iface.mapCanvas().layers()  # grabs only the visible layers that are in Layers tab
+# grabs only the visible layers that are in Layers tab
+layers = iface.mapCanvas().layers()
 
 indx = -1
 
 for layer in layers:
-	indx = indx + 1
-	if layer.type() == QgsMapLayer.RasterLayer:   # For this example I only want to grab Raster layers
-		print("Layer: ",layer)                      # Prints out the layer, the layers name, id, and the index position within the layers group
-		print("Name: ",layer.name())
-		print("ID: ",layer.id())
-		print(indx)
-		print("---------")
+    indx = indx + 1
+    # For this example I only want to grab Raster layers
+    # Prints out the layer, the layers name, id, and the 
+    #index position within the layers group
+    if layer.type() == QgsMapLayer.RasterLayer:
+        print("Layer: ",layer)
+        print("Name: ",layer.name())
+        print("ID: ",layer.id())
+        print(indx)
+        print("---------")
 
-# Next we'll setup the Input Dialog info: window title, input box label, mode, and default value for input box
+# Next we'll setup the Input Dialog info: window title, 
+# input box label, mode, and default value for input box
 title = "Enter the index number for the file you want to choose"
 label = "Index: "
 mode = QLineEdit.Normal
 default = "<your index number here>"
 
-index_value, ok = QInputDialog.getText(qid, title, label, mode, default)    # Get User Input for the appropriate index value corresponding
-                                                                            # to the raster layer you want to input into gdal.Warp()
+# Get User Input for the appropriate index value corresponding
+# to the raster layer you want to input into gdal.Warp()
+index_value, ok = QInputDialog.getText(qid, title, label, mode, default)
 
-rLayer = layers[int(index_value)]               # Set user response as an integer so we can grab the appropriate layer with its index
-input_layer = str(rLayer.source())              # Path to the raster layer file as a string
-output_rLayer = "C:/Path/To/File/out_test.tif"     # Output file path, remember to input your correct destination
+# Set user response as an integer so we can grab the appropriate layer with its index
+# Then set the path to the raster layer file as a string
+# Finally output file path, remember to input your correct destination
+rLayer = layers[int(index_value)]
+input_layer = str(rLayer.source())
+output_rLayer = "C:/Path/To/File/out_test.tif"
 
-# gdal.Warp() needs two mandatory pieces of info (input and output file paths) plus any keywords (see below for a list of all of them).
-# In the line below you can see I'm setting the resolution of each pixel in the current CRS format (here it's in meters),
-# then the format of the output file (GTiff), and the resampling algorthim I'm using (Bilinear).
-# There are plenty of other keywords available to set as well. If you have to do this for a lot of files,
-# and would use the same settings for each it might be simpler to use gdal.WarpOptions() and reference that
-# in your gdal.Warp() call instead of having a long list of keyword arguements.
+# gdal.Warp() needs two mandatory pieces of info (input and output file paths) 
+# plus any keywords (see below for a list of all of them).
+# In the line below you can see I'm setting the resolution of each pixel in the
+# current CRS format (here it's in meters), then the format of the output 
+# file (GTiff), and the resampling algorthim I'm using (Bilinear).
+# There are plenty of other keywords available to set as well. If you have to 
+# do this for a lot of files, and would use the same settings for each it might
+# be simpler to use gdal.WarpOptions() and reference that in your gdal.Warp() 
+# call instead of having a long list of keyword arguements.
 
 gdal.Warp(output_rLayer, input_rLayer, xRes=0.5, yRes=0.5, format="GTiff", resampleAlg="Bilinear")
 
-iface.addRasterLayer(output_rLayer, 'out_test')  # Add warped layer to your QGIS project (file_path, file_name_to_be_used)
+# Add warped layer to your QGIS project (file_path, file_name_to_be_used)
+iface.addRasterLayer(output_rLayer, 'out_test')  
+
+# End of Code
 
 
 #
