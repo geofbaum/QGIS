@@ -5,14 +5,20 @@ qid = QInputDialog()
 
 layers = iface.mapCanvas().layers()
 
-# gdal.GCPs are in the following format: gdal.GCP(x, y, z, col/pixel, row/line)
+# gdal.GCPs are in the following format: 
+# gdal.GCP(x, y, z, col/pixel, row/line)
+#
 # https://gdal.org/python/osgeo.gdal-pysrc.html#GCP.__init__
 
 # Hardcoded in this example for simplicity and to show an example.
-# File that I used for creating this example is in EPSG:32618 (WGS 84/UTM Zone 18N)
+# File that I used for creating this example is in 
+# EPSG:32618 (WGS 84/UTM Zone 18N)
 
-# I chose to use three GCPs since while not necessary for all of the resampling techniques, it is necessary for some types.
-gcp = [gdal.GCP(608219.1, 5000622.62, 51),gdal.GCP(608731.42, 5000712.73, 51),gdal.GCP(608420.77, 5000422.68, 52)] 
+# I chose to use three GCPs since while not necessary for all of 
+# the resampling techniques, it is necessary for some types.
+gcp = [gdal.GCP(608219.1, 5000622.62, 51),
+       gdal.GCP(608731.42, 5000712.73, 51),
+       gdal.GCP(608420.77, 5000422.68, 52)] 
 
 indx = -1
 
@@ -48,10 +54,13 @@ ymin = ex.yMinimum()
 
 exten = [xmin, ymax, xmax, ymin]  # format: [ulx, uly, lrx, lry]
 
-gdal.translate(temp_output, input_layer, outputBounds=exten, outputSRS="EPSG:32618", format="GTiff", GCPs=gcp)
+gdal.translate(temp_output, input_layer, outputBounds=exten, 
+               outputSRS="EPSG:32618", format="GTiff", GCPs=gcp)
 
 georef_out = "C:/Path/To/Output/Folder/"+fname
 
-gdal.Warp(georef_out, temp_output, format="GTiff", xRes=0.5, yRes=0.5, resampleAlg="Bilinear") # Please see the other options for
+gdal.Warp(georef_out, temp_output, format="GTiff", xRes=0.5, 
+          yRes=0.5, resampleAlg="Bilinear") 
+          # Please see the other options for resampleAlg
 
 iface.addRasterLayer(georef_out, 'georef_out_test')
