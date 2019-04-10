@@ -3,19 +3,21 @@ from PyQt5.QtGui import *
 
 qid = QInputDialog()
 
-layers = iface.mapCanvas().layers()                       # Create a list of the visible layers present in the project
+# Create a list of the visible layers present in the project
+layers = iface.mapCanvas().layers()
 
 indx = -1
 
 for layer in layers:
-	indx = indx + 1
-	if layer.type() == QgsMapLayer.RasterLayer:             # Print out to console only Raster layers and their info
-		print("Layer: ",layer)
-		print("Name: ",layer.name())
-		print("ID: ",layer.id())
-		print("Index Number: ",indx)
-		#layerIDs.append(layer.id())
-		print("---------")
+    indx = indx + 1
+	# Print out to console only Raster layers and their info
+    if layer.type() == QgsMapLayer.RasterLayer:
+        print("Layer: ",layer)
+        print("Name: ",layer.name())
+        print("ID: ",layer.id())
+        print("Index Number: ",indx)
+        #layerIDs.append(layer.id())
+        print("---------")
 
 # Set parameters for User Input Dialog window
 title = "Enter the index number for the file you want to choose"
@@ -23,19 +25,28 @@ label = "Index: "
 mode = QLineEdit.Normal
 default = "<your index number here>"
 
-index_value, ok = QInputDialog.getText(qid, title, label, mode, default)  # User Input dialog window
+# User Input dialog window
+index_value, ok = QInputDialog.getText(qid, title, label, mode, default)
 
-rLayer = layers[int(index_value)]                                         # Using user input get correct layer to put into gdal.Translate()
-input_layer = str(rLayer.source())                                        # Get path for that layer file
-output_rLayer = "C:/Path/To/Output_file/translate_out_test.tif"           # Set output file path
+# Using user input get correct layer to put into gdal.Translate()
+# Then get path for that layer file
+# Finally set output file path
+rLayer = layers[int(index_value)]
+input_layer = str(rLayer.source())
+output_rLayer = "C:/Path/To/Output_file/translate_out_test.tif"
 
-gdal.Translate(output_rLayer, input_layer, format="GTiff") # Normally I wouldn't worry about any or most of the options since I'd
-                                                           # send this file directly to gdal.Warp() where I could set a lot of the same
-                                                           # options. One option however that would probably be used in that situation
-                                                           # is the one for GCPs. In the file for the georeferencer example that option
-                                                           # will be shown. For this example I'm only setting the output format.
+gdal.Translate(output_rLayer, input_layer, format="GTiff")
+# Normally I wouldn't worry about any or most of the options since I'd
+# send this file directly to gdal.Warp() where I could set a lot of the same
+# options. One option however that would probably be used in that situation
+# is the one for GCPs. In the file for the georeferencer example that option
+# will be shown. For this example I'm only setting the output format.
 
-iface.addRasterLayer(output_rLayer, 'translate_out_test')  # Add output from gdal.Translate() to the canvas.
+
+# Add output from gdal.Translate() to the canvas.
+iface.addRasterLayer(output_rLayer, 'translate_out_test')
+
+# End of Code
 
 #
 #
